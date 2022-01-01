@@ -15,7 +15,6 @@ public class ExampleMixin {
 	@Inject(at = @At("HEAD"), method = "init()V")
 	private void init(CallbackInfo info) {
 		final var MC = MinecraftClient.getInstance();
-		ExampleMod.LOGGER.info("MC.getWindow().getX(): " + MC.getWindow().getX() + "MC.getWindow().getHeight(): " + MC.getWindow().getHeight());
 		ItemUI ui = new ItemUI();
 		MinecraftClient.getInstance().setScreen(ui);
 	}

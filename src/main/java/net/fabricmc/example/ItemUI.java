@@ -31,8 +31,8 @@ public class ItemUI extends Screen {
     private static final MinecraftClient MC = MinecraftClient.getInstance();
     private final File FILE = new File("item_renders");
 
-    private static final int WIDTH = 256;
-    private static final int HEIGHT = 256;
+    private static final int WIDTH = 300;
+    private static final int HEIGHT = 300;
 
 
     private final Deque<Item> queue = new ArrayDeque<>();
@@ -63,7 +63,7 @@ public class ItemUI extends Screen {
         }
         innerRenderInGui(new ItemStack(queue.pop()));
 
-        MC.textRenderer.draw(matrices, String.format("Loading... (%s/%s)", max - queue.size(), max), 500, 100, 0xFFFFFF);
+        MC.textRenderer.draw(matrices, String.format("Loading... (%s/%s)", max - queue.size(), max), 300, 100, 0xFFFFFF);
     }
 
     private void innerRenderInGui(ItemStack itemStack) {
@@ -120,7 +120,7 @@ public class ItemUI extends Screen {
         RenderSystem.applyModelViewMatrix();
 
         ByteBuffer buf = BufferUtils.createByteBuffer(WIDTH * HEIGHT * 4);
-        GL11.glReadPixels(0, MC.getWindow().getHeight() - HEIGHT, WIDTH, HEIGHT, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buf);
+        GL11.glReadPixels(MC.getWindow().getX(), MC.getWindow().getHeight() - HEIGHT, WIDTH, HEIGHT, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buf);
 
         new Thread(() -> {
             BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
@@ -145,9 +145,7 @@ public class ItemUI extends Screen {
             } finally {
                 try {
                     ImageIO.write(image, "png", new File(FILE, Registry.ITEM.getId(stack.getItem()).getPath().toUpperCase() + ".png"));
-                } catch (Exception ignored) {
-                }
-
+                } catch (Exception ignored) {}
             }
         }).start();
     }
